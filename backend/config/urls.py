@@ -15,12 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
-from rest_framework import routers
-from apps.accounts.views import UserViewSet
-from drf_yasg import openapi
+from django.urls import path, include, re_path
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
+from apps.accounts.views import UserViewSet
+from apps.tasks.views import TaskViewSet, TaskDetailView
+from apps.core.views import CategoryViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet, basename='users')
+router.register(r'tasks', TaskViewSet, basename='tasks')
+router.register(r'categories', CategoryViewSet, basename='cats')
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -29,12 +38,15 @@ schema_view = get_schema_view(
     ),
     public=True,
 )
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/auth/', include('rest_framework.urls')),
-    path('api/docs/', schema_view.with_ui('swagger')),
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0)),
+    # path('api/tasks/<slug:slug>/', TaskDetailView.as_view(), name='task-detail'),
+    re_path(r'^api/tasks/(?P<slug>[\w-]*)/$', TaskDetailView.as_view(), name='task-detail'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

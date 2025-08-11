@@ -5,5 +5,6 @@ psycopg2-binary==2.9.9
 django-environ==0.11.2
 Pillow==10.3.0
 drf-yasg
-faker 
+faker==24.11.0
 django-seed
+python-slugify[unidecode]==8.0.4

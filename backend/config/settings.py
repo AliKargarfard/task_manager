@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'drf_yasg',
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'environ',
+     'environ',
     'apps.accounts.apps.AccountsConfig',
     'apps.tasks.apps.TasksConfig',
     'apps.core.apps.CoreConfig',
@@ -134,7 +136,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# تنظیمات پایه
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# تنظیمات اضافی برای توسعه
+if DEBUG:
+    from django.urls import re_path
+    from django.views.static import serve
+    
+    urlpatterns = [
+        re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

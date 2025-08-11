@@ -20,7 +20,12 @@ class Category(BaseModel):
     name = models.CharField(max_length=100, unique=True, verbose_name="نام دسته‌بندی")
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
     color = models.CharField(max_length=7, default='#808080', verbose_name="کد رنگ")
-    icon = models.CharField(max_length=50, blank=True, verbose_name="آیکون")
+    icon = models.ImageField(
+        upload_to='categories/icons/',
+        blank=True,
+        verbose_name="آیکون",
+        help_text="آیکون دسته‌بندی با فرمت SVG یا PNG"
+    )
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
