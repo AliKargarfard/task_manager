@@ -1,0 +1,36 @@
+# فایل‌های حساس محیطی
+.env
+*.env.local
+.env.*
+!.env.example
+
+# فایل‌های رسانه و استاتیک
+/media/
+/staticfiles/
+/backend/static/
+
+# فایل‌های دیتابیس
+*.sqlite3
+*.db
+/postgres_data/
+
+# فایل‌های سیستم‌عامل
+.DS_Store
+Thumbs.db
+
+# فایل‌های IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# فایل‌های پایتون
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pot
+*.log
+*.sql
+
+# فایل‌های Docker
+docker-compose.override.yml
